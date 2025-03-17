@@ -6,8 +6,14 @@ gen-proto:
     --go-grpc_out=. --go-grpc_opt=paths=source_relative \
     proto/hello.proto
 
-build:
-	@go build -o bin/main main.go
+build-server: gen-proto
+	@go build -o bin/server/main cmd/server/main.go
 
-run: build
-	@./bin/main
+run-server: build-server
+	@./bin/server/main
+
+build-client:
+	@go build -o bin/client/main cmd/client/main.go
+
+run-client: build-client
+	@./bin/client/main
