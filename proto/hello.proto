@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package hello.v1;
+
+option go_package = "github.com/iamNilotpal/grpc/proto;pb";
+
+message Person {
+  string firstName = 1;
+  string lastName = 2;
+  string dob = 3;
+  string email = 4;
+}
