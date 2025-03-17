@@ -11,6 +11,7 @@ import (
 
 func main() {
 	srv := hello.NewService()
+
 	grpcServer := grpc.NewServer(grpc.EmptyServerOption{})
 	defer func() {
 		log.Println("Shutting down GRPC server")
