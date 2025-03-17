@@ -15,7 +15,6 @@ func main() {
 	if err != nil {
 		log.Fatalf("Client conn error : %v", err)
 	}
-
 	defer func() {
 		if err := conn.Close(); err != nil {
 			log.Fatalf("Client conn close error : %v", err)
