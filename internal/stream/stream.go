@@ -1,6 +1,9 @@
 package stream
 
 import (
+	"io"
+	"log"
+	"sync/atomic"
 	"time"
 
 	pb "github.com/iamNilotpal/grpc/proto/__generated__"
@@ -40,5 +43,22 @@ func (service) StreamServerTime(req *pb.StreamTimeRequest, stream grpc.ServerStr
 				}
 			}
 		}
+	}
+}
+
+func (service) StreamServerLog(stream grpc.ClientStreamingServer[pb.LogStreamRequest, pb.LogStreamResponse]) error {
+	var count int32
+
+	for {
+		req, err := stream.Recv()
+		if err != nil {
+			if err == io.EOF {
+				return stream.SendAndClose(&pb.LogStreamResponse{EntiresLogged: count})
+			}
+			return err
+		}
+
+		atomic.AddInt32(&count, 1)
+		log.Printf("Log Received : [%s] [%s] [%s]\n", req.LogLevel, req.Message, req.Timestamp.AsTime().Local().String())
 	}
 }

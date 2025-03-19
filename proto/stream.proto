@@ -14,6 +14,25 @@ message StreamTimeResponse {
   google.protobuf.Timestamp currentTime = 1;
 }
 
+message LogStreamRequest {
+  google.protobuf.Timestamp timestamp = 1;
+  LogLevel logLevel = 2;
+  string message = 3;
+}
+
+message LogStreamResponse {
+  int32 entiresLogged = 1;
+}
+
+enum LogLevel {
+  UNSPECIFIED = 0;
+  DEBUG = 1;
+  INFO = 2;
+  WARNING = 3;
+  ERROR = 4;
+}
+
 service StreamTimeService {
   rpc StreamServerTime(StreamTimeRequest) returns (stream StreamTimeResponse);
+  rpc StreamServerLog(stream LogStreamRequest) returns (LogStreamResponse);
 }
