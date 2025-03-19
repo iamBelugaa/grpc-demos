@@ -1,11 +1,6 @@
 tidy:
 	@go mod tidy
 
-# gen-proto:
-# 	@protoc --go_out=proto/__generated__ --go_opt=paths=source_relative \
-#   --go-grpc_out=proto/__generated__ --go-grpc_opt=paths=source_relative \
-#   proto/*.proto
-
 gen-proto:
 	@protoc --go_out=proto/__generated__ --go_opt=module=github.com/iamNilotpal/grpc/proto \
   --go-grpc_out=proto/__generated__ --go-grpc_opt=module=github.com/iamNilotpal/grpc/proto \
@@ -26,3 +21,11 @@ run-todo-server:
 run-todo-client:
 	@go build -o bin/todo/client/main cmd/todo/client/main.go
 	@./bin/todo/client/main
+
+run-stream-server:
+	@go build -o bin/stream/server/main cmd/stream/server/main.go
+	@./bin/stream/server/main
+
+run-stream-client:
+	@go build -o bin/stream/client/main cmd/stream/client/main.go
+	@./bin/stream/client/main
