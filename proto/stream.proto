@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package stream;
+
+option go_package = "github.com/iamNilotpal/grpc/proto;pb";
+
+import "google/protobuf/timestamp.proto";
+
+message StreamTimeRequest {
+  sint32 intervalSeconds = 1;
+}
+
+message StreamTimeResponse {
+  google.protobuf.Timestamp currentTime = 1;
+}
+
+service StreamTimeService {
+  rpc StreamServerTime(StreamTimeRequest) returns (stream StreamTimeResponse);
+}
