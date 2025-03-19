@@ -1,10 +1,15 @@
 tidy:
 	@go mod tidy
 
+# gen-proto:
+# 	@protoc --go_out=proto/__generated__ --go_opt=paths=source_relative \
+#   --go-grpc_out=proto/__generated__ --go-grpc_opt=paths=source_relative \
+#   proto/*.proto
+
 gen-proto:
-	@protoc --go_out=. --go_opt=paths=source_relative \
-    --go-grpc_out=. --go-grpc_opt=paths=source_relative \
-    proto/*.proto
+	@protoc --go_out=proto/__generated__ --go_opt=module=github.com/iamNilotpal/grpc/proto \
+  --go-grpc_out=proto/__generated__ --go-grpc_opt=module=github.com/iamNilotpal/grpc/proto \
+  proto/*.proto
 
 run-hello-server:
 	@go build -o bin/hello/server/main cmd/hello/server/main.go

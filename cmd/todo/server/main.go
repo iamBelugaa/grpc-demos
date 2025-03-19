@@ -9,7 +9,7 @@ import (
 	"syscall"
 
 	"github.com/iamNilotpal/grpc/internal/todo"
-	pb "github.com/iamNilotpal/grpc/proto"
+	pb "github.com/iamNilotpal/grpc/proto/__generated__"
 	"google.golang.org/grpc"
 )
 
