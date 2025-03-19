@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package todo;
+
+option go_package = "github.com/iamNilotpal/grpc/proto;pb";
+
+message AddTodoRequest {
+  string title = 1;
+}
+
+message AddTodoResponse {
+  int64 id = 1;
+  string title = 2;
+  bool done = 3;
+  int64 createdAt = 4;
+}
+
+message DeleteTodoRequest {
+  int64 id = 1;
+}
+
+message DeleteTodoResponse {
+  bool success = 1;
+}
+
+message UpdateTodoRequest {
+  int64 id = 1;
+  optional string title = 2;
+  optional bool done = 3;
+}
+
+message UpdateTodoResponse {
+  bool success = 1;
+}
+
+message ListTodoRequest {}
+
+message Todo {
+  int64 id = 1;
+  string title = 2;
+  bool done = 3;
+  int64 createdAt = 4;
+}
+
+message ListTodoResponse {
+  repeated Todo todos = 1;
+}
+
+service TodoService {
+  rpc AddTodo(AddTodoRequest) returns (AddTodoResponse);
+  rpc UpdateTodo(UpdateTodoRequest) returns (UpdateTodoResponse);
+  rpc DeleteTodo (DeleteTodoRequest) returns (DeleteTodoResponse);
+  rpc ListTodos (ListTodoRequest) returns (ListTodoResponse);
+}
