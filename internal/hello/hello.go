@@ -3,6 +3,7 @@ package hello
 import (
 	"context"
 	"math/rand/v2"
+	"strings"
 
 	pb "github.com/iamNilotpal/grpc/proto"
 	"google.golang.org/grpc/codes"
@@ -14,9 +15,18 @@ type service struct {
 }
 
 func (service) SayHello(context context.Context, req *pb.SayHelloRequest) (*pb.SayHelloResponse, error) {
+	if strings.EqualFold(strings.TrimSpace(req.FirstName), "") {
+		return nil, status.Errorf(codes.InvalidArgument, "FirstName is required")
+	}
+
+	if strings.EqualFold(strings.TrimSpace(req.LastName), "") {
+		return nil, status.Errorf(codes.InvalidArgument, "LastName is required")
+	}
+
 	if rand.IntN(10) < 5 {
 		return nil, status.Errorf(codes.Internal, "Internal Server Error")
 	}
+
 	return &pb.SayHelloResponse{Message: req.FirstName + " " + req.LastName}, nil
 }
 

@@ -4,16 +4,20 @@ tidy:
 gen-proto:
 	@protoc --go_out=. --go_opt=paths=source_relative \
     --go-grpc_out=. --go-grpc_opt=paths=source_relative \
-    proto/hello.proto
+    proto/*.proto
 
-build-server: gen-proto
-	@go build -o bin/server/main cmd/server/main.go
+run-hello-server:
+	@go build -o bin/hello/server/main cmd/hello/server/main.go
+	@./bin/hello/server/main
 
-run-server: build-server
-	@./bin/server/main
+run-hello-client:
+	@go build -o bin/hello/client/main cmd/hello/client/main.go
+	@./bin/hello/client/main
 
-build-client:
-	@go build -o bin/client/main cmd/client/main.go
+run-todo-server:
+	@go build -o bin/todo/server/main cmd/todo/server/main.go
+	@./bin/todo/server/main
 
-run-client: build-client
-	@./bin/client/main
+run-todo-client:
+	@go build -o bin/todo/client/main cmd/todo/client/main.go
+	@./bin/todo/client/main

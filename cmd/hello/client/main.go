@@ -8,6 +8,7 @@ import (
 	pb "github.com/iamNilotpal/grpc/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/grpc/status"
 )
 
 func main() {
@@ -23,11 +24,16 @@ func main() {
 
 	client := pb.NewHelloServiceClient(conn)
 	resp, err := client.SayHello(
-		context.Background(), &pb.SayHelloRequest{FirstName: "Nilotpal", LastName: "Deka"},
+		context.Background(), &pb.SayHelloRequest{FirstName: "", LastName: "Deka"},
 	)
 
 	if err != nil {
-		log.Fatalf("SayHello request error : %v", err)
+		s, ok := status.FromError(err)
+		if !ok {
+			log.Fatalf("SayHello request error : %v", err)
+		} else {
+			log.Fatalf("SayHello request error : %v", s)
+		}
 	}
 	fmt.Printf("Response : %s\n", resp.GetMessage())
 }
