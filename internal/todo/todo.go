@@ -12,29 +12,22 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-type Todo struct {
-	ID        int64
-	Title     string
-	Done      bool
-	CreatedAt int64
-}
-
 type service struct {
 	mu    sync.RWMutex
-	todos map[int64]*Todo
+	todos map[int64]*pb.Todo
 	pb.UnimplementedTodoServiceServer
 }
 
 func NewService() *service {
 	return &service{
 		mu:    sync.RWMutex{},
-		todos: make(map[int64]*Todo),
+		todos: make(map[int64]*pb.Todo),
 	}
 }
 
 func (s *service) AddTodo(context context.Context, req *pb.AddTodoRequest) (*pb.AddTodoResponse, error) {
-	newTodo := &Todo{
-		ID:        rand.Int64(),
+	newTodo := &pb.Todo{
+		Id:        rand.Int64(),
 		Title:     strings.TrimSpace(req.Title),
 		Done:      false,
 		CreatedAt: time.Now().UnixNano(),
@@ -43,9 +36,9 @@ func (s *service) AddTodo(context context.Context, req *pb.AddTodoRequest) (*pb.
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
-	s.todos[newTodo.ID] = newTodo
+	s.todos[newTodo.Id] = newTodo
 	return &pb.AddTodoResponse{
-			Id:        newTodo.ID,
+			Id:        newTodo.Id,
 			Title:     newTodo.Title,
 			Done:      newTodo.Done,
 			CreatedAt: newTodo.CreatedAt,
@@ -99,12 +92,7 @@ func (s *service) ListTodos(context context.Context, req *pb.ListTodoRequest) (*
 
 	todos := make([]*pb.Todo, 0, len(s.todos))
 	for _, todo := range s.todos {
-		todos = append(todos, &pb.Todo{
-			Id:        todo.ID,
-			Title:     todo.Title,
-			Done:      todo.Done,
-			CreatedAt: todo.CreatedAt,
-		})
+		todos = append(todos, todo)
 	}
 
 	return &pb.ListTodoResponse{Todos: todos}, nil
